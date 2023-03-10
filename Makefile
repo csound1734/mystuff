@@ -1,6 +1,6 @@
 branch = main
 remote = origin
-yumyum = ~/Music/yumyum
+yumyum = ../yumyum
 
 outwav = locl.wav
 
