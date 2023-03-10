@@ -15,5 +15,5 @@ setsail: puff.txt
 	git push -u $(remote) $(branch)
 
 .PHONY: import
-import:
+import: puff.txt
 	git pull $(remote)
