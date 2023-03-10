@@ -5,15 +5,18 @@ yumyum = ~/Music/yumyum
 outwav = locl.wav
 
 
+CS_OPTIONS = -Ma
+
+
 
 
 .PHONY : odac
 odac:
-	echo "-odac" > .csound6rc
+	echo "-odac $(CS_OPTIONS)" > .csound6rc
 
 .PHONY : owav
 owav:
-	echo "-W -o $(outwav)" > .csound6rc
+	echo "-W -o $(outwav) $(CS_OPTIONS)" > .csound6rc
 
 
 
