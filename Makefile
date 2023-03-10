@@ -1,4 +1,5 @@
 branch = main
+remote = origin
 yumyum = ~/Music/yumyum
 
 puff.txt : $(yumyum)
@@ -11,5 +12,8 @@ allaboard:
 
 .PHONY: setsail
 setsail: puff.txt
-	git push -u origin $(branch)
+	git push -u $(remote) $(branch)
 
+.PHONY: import
+import:
+	git pull $(remote)
