@@ -1,4 +1,4 @@
-Hello
+## Git workflow - using make
 
 ### How to add, commit, and push upstream all the latest changes to the (main) branch:
 ```
