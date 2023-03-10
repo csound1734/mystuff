@@ -10,6 +10,13 @@ CS_OPTIONS = -Ma
 
 
 
+.PHONY: shlob
+shlob: shlob.orc locl.wav shlob/1.sco
+	csound -r96000 -k64 --orc --strset3=locl.wav -L stdin shlob.orc
+
+
+
+
 .PHONY : odac
 odac:
 	echo "-odac $(CS_OPTIONS)" > .csound6rc
