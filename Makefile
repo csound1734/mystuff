@@ -1,4 +1,8 @@
 branch = main
+yumyum = ~/Music/yumyum
+
+puff.txt : $(yumyum)
+	cat $(yumyum) > $@
 
 .PHONY: allaboard
 allaboard:
@@ -6,6 +10,6 @@ allaboard:
 	git commit -a -m "commit by make"	
 
 .PHONY: setsail
-setsail:
-	git push -u origin @(branch)
+setsail: puff.txt
+	git push -u origin $(branch)
 
