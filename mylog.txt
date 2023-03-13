@@ -1,0 +1,54 @@
+Reading options from local directory .csound6rc
+WARNING: could not open library '/Library/Frameworks/CsoundLib64.framework/Versions/6.0/Resources/Opcodes64/librtjack.dylib' (-1)
+WARNING: could not open library '/Users/nicoleschmidt/Library/csound/6.0/plugins64/libjsfx.dylib' (-1)
+scoreless operation
+orchname:  main.orc
+rtaudio: PortAudio module enabled ...
+using callback interface
+rtmidi: PortMIDI module enabled
+Elapsed time at end of orchestra compile: real: 0.004s, CPU: 0.004s
+sorting score ...
+	... done
+Elapsed time at end of score sort: real: 0.004s, CPU: 0.004s
+Reading options from local directory .csound6rc
+--Csound version 6.18 (double samples) Nov 24 2022
+[commit: a1580f9cdf331c35dceb486f4231871ce0b00266]
+libsndfile-1.1.0
+graphics suppressed, ascii substituted
+sr = 44100.0, kr = 4410.000, ksmps = 10
+0dBFS level = 1.0, A4 tuning = 440.0
+0: virtual1 (portmidi)
+1: virtual2 (portmidi)
+PortMIDI: Activated input device 0: 'virtual1' (CoreMIDI)
+PortMIDI: Activated input device 1: 'virtual2' (CoreMIDI)
+orch now loaded
+audio buffered in 1024 sample-frame blocks
+PortAudio V19.7.0-devel, revision 147dd722548358763a8b649b3e4b41dfffbcfbb6
+   0: dac0 (Built-in Output [Core Audio, 0 in, 2 out])
+   1: dac1 (Movavi Sound Grabber [Core Audio, 2 in, 2 out])
+   2: dac2 (Soundflower (2ch) [Core Audio, 2 in, 2 out])
+   3: dac3 (Soundflower (64ch) [Core Audio, 64 in, 64 out])
+PortAudio: selected output device 'Built-in Output'
+writing 2048 sample blks of 64-bit floats to dac
+SECTION 1:
+new alloc for instr 7801:
+ftable 101:
+ftable 101:	2 points, scalemax 1.000
+__
+
+
+
+
+
+
+
+
+
+_
+inactive allocs returned to freespace
+end of score.		   overall amps:  0.00000  0.00000
+	   overall samples out of range:        0        0
+0 errors in performance
+Elapsed time at end of performance: real: 6.794s, CPU: 0.173s
+closing device
+287 2048 sample blks of 64-bit floats written to dac

@@ -10,12 +10,41 @@ CS_OPTIONS = -Ma
 
 
 
+.PHONY: main
+main: main.orc
+	csound $(CS_OPTIONS) main.orc
+
+
 .PHONY: shlob
 shlob: shlob.orc ../germcity/r/r.wav shlob/1.sco
-	csound -r96000 -k64 --strset3=../germcity/r/r.wav shlob.orc shlob/1.sco
+	csound $(CS_OPTIONS) --strset3=../germcity/r/r.wav shlob.orc shlob/1.sco
 
 
 
+
+.PHONY : layer
+layer: under.wav
+	echo "-i under.wav" >> .csound6rc
+
+.PHONY : sr96k
+sr96k :
+	echo "-r96000" >> .csound6rc
+
+.PHONY : kr1000
+kr1000 :
+	echo "-k1000" >> .csound6rc
+
+.PHONY : str3l
+str3l:
+	echo "--strset3=locl.wav" >> .csound6rc
+
+.PHONY : stdi
+stdi:
+	echo "-L stdin" >> .csound6rc
+
+.PHONY : orca
+orca:
+	echo "--orc" >> .csound6rc
 
 .PHONY : odac
 odac:
