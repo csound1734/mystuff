@@ -11,8 +11,8 @@ CS_OPTIONS = -Ma
 
 
 .PHONY: shlob
-shlob: shlob.orc locl.wav shlob/1.sco
-	csound -r96000 -k64 --orc --strset3=locl.wav -L stdin shlob.orc
+shlob: shlob.orc ../germcity/r/r.wav shlob/1.sco
+	csound -r96000 -k64 --strset3=../germcity/r/r.wav shlob.orc shlob/1.sco
 
 
 
