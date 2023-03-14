@@ -1,3 +1,7 @@
+## Projects
+
+`make locl5.wav`
+
 ## Csound utilities
 
 ### Play a (stereo or mono) sound with automatic ending
