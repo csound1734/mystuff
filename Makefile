@@ -5,32 +5,116 @@ yumyum = ../yumyum
 inwav = inpu.wav
 outwav = locl.wav
 
+basic = f0z.sco main.orc
+
 
 CS_OPTIONS = -Ma
 
 
 
+laststep = bash playme.sh
 
-cv1.wav : intrm/cl1.wav intrm/cl2.wav main.orc
-	echo "i67 0 0.37 1 1 0 0 1 2 3" > temp.sco
-	echo "f1 0 0 1 \"intrm/cl2.wav\" 0 0 1" >> temp.sco
-	echo "f2 0 0 1 \"intrm/cl2.wav\" 0 0 2" >> temp.sco
-	echo "i69 0 1.70 0 1 1 2 .12 2 3" >> temp.sco
-	echo "i2103 0 1.70 2 3" >> temp.sco
-	csound -W -o$@ -r96000 -k64 --strset1=intrm/cl1.wav main.orc temp.sco
+
+
+
+locl5.wav : $(basic) locl4.wav
+	echo "f1 0 0 1 \"locl4.wav\" 0 0 1" >> f0z.sco
+	echo "f2 0 0 1 \"locl4.wav\" 0 0 2" >> f0z.sco
+	echo "i 2105 0 0 3 1 2 .1" >> f0z.sco
+	csound -r96000 -k64 -W -o$@ --strset3=locl4.wav main.orc f0z.sco
+	echo "f 0 z" > f0z.sco
+	$(laststep) $@
+
+locl4.wav : $(basic) locl3.wav
+	echo "f1 0 0 1 \"locl3.wav\" 0 0 1" >> f0z.sco
+	echo "f2 0 0 1 \"locl3.wav\" 0 0 2" >> f0z.sco
+	echo "i 2105 0 0 3 1 2 .2" >> f0z.sco
+	csound -r96000 -k64 -W -o$@ --strset3=locl3.wav main.orc f0z.sco
+	echo "f 0 z" > f0z.sco
+	$(laststep) $@
+
+locl3.wav : $(basic) locl2.wav
+	echo "f1 0 0 1 \"locl2.wav\" 0 0 1" >> f0z.sco
+	echo "f2 0 0 1 \"locl2.wav\" 0 0 2" >> f0z.sco
+	echo "i 2105 0 0 3 1 2 .2" >> f0z.sco
+	csound -r96000 -k64 -W -o$@ --strset3=locl2.wav main.orc f0z.sco
+	echo "f 0 z" > f0z.sco
+	$(laststep) $@
+
+locl2.wav : $(basic) locl.wav
+	echo "f1 0 0 1 \"locl.wav\" 0 0 1" >> f0z.sco
+	echo "f2 0 0 1 \"locl.wav\" 0 0 2" >> f0z.sco
+	echo "i 2105 0 0 3 1 2 .3" >> f0z.sco
+	csound -r96000 -k64 -W -o$@ --strset3=locl.wav main.orc f0z.sco
+	echo "f 0 z" > f0z.sco
+	$(laststep) $@
+
+locl.wav : $(basic) drcl.wav
+	bash varspd.sh drcl.wav .2 temp.wav
+	echo "f1 0 0 1 \"drcl.wav\" 0 0 1" >> f0z.sco
+	echo "f2 0 0 1 \"drcl.wav\" 0 0 2" >> f0z.sco
+	echo "i 2105 0 0 3 1 2 .3" >> f0z.sco
+	csound -r96000 -k64 -W -o$@ --strset3=temp.wav main.orc f0z.sco
+	echo "f 0 z" > f0z.sco
+	$(laststep) $@
+	rm temp.wav
+
+
+
+
+dr2.wav : dr1.wav
+	echo "f1 0 0 1 \"dr1.wav\" 0 0 1" >> f0z.sco
+	echo "f2 0 0 1 \"dr1.wav\" 0 0 2" >> f0z.sco
+	echo "i 2105 0 0 3 1 2 .2" >> f0z.sco
+	csound -r96000 -k64 -W -o$@ --strset3=drz.wav main.orc f0z.sco
+	echo "f 0 z" > f0z.sco
+	$(laststep) $@
+
+dr1.wav :
+	echo "f1 0 0 1 \"drx.wav\" 0 0 1" >> f0z.sco
+	echo "f2 0 0 1 \"drx.wav\" 0 0 2" >> f0z.sco
+	echo "i 2105 0 0 3 1 2 .45" >> f0z.sco
+	csound -r96000 -k64 -W -o$@ --strset3=drz.wav main.orc f0z.sco
+	echo "f 0 z" > f0z.sco
+	$(laststep) $@
+	
+
+
+
+
+cv2.wav : cv1.wav cv1a.wav f0z.sco main.orc
+	cat f0z.sco > temp.sco
+	echo "f1 0 0 1 \"cv1.wav\" 0 0 1" >> temp.sco
+	echo "f2 0 0 1 \"cv1.wav\" 0 0 2" >> temp.sco
+	echo "i2105 0 0 3 1 2 .1" >> temp.sco
+	csound -W -o$@ -r96000 -k64 --strset3=cv1a.wav main.orc temp.sco
 	rm temp.sco
-	rm intrm/*
-	bash playme.sh $@
+	$(laststep) $@
 
-intrm/cl1.wav : main.orc
+cv1a.wav : cv1.wav f0z.sco main.orc
+	bash varspd.sh cv1.wav 1.3333333333333 $@
+	$(laststep) $@
+	
+cv1.wav : cl1.wav cl2.wav f0z.sco main.orc
+	cat f0z.sco > temp.sco
+	echo "f1 0 0 1 \"cl2.wav\" 0 0 1" >> temp.sco
+	echo "f2 0 0 1 \"cl2.wav\" 0 0 2" >> temp.sco
+	echo "i2105 0 0 1 1 2 .3" >> temp.sco
+	csound -W -o$@ -r96000 -k64 --strset1=cl1.wav main.orc temp.sco
+	rm temp.sco
+	$(laststep) $@
+
+cl1.wav : main.orc
 	echo "i67 0 0.37 3 1.40 6 0 1 0 1" > temp.sco
 	csound -W -o$@ -r96000 -k64 --strset3=../germcity/r/r.wav main.orc temp.sco
 	rm temp.sco
+	$(laststep) $@
 
-intrm/cl2.wav : main.orc
+cl2.wav : main.orc
 	echo "i67 0 0.37 3 -.75 15.6 0 1 0 1" > temp.sco
 	csound -W -o$@ -r96000 -k64 --strset3=../germcity/r/r.wav main.orc temp.sco
 	rm temp.sco
+	$(laststep) $@
 
 
 
@@ -43,52 +127,6 @@ main: main.orc
 shlob: shlob.orc ../germcity/r/r.wav shlob/1.sco
 	csound $(CS_OPTIONS) --strset3=../germcity/r/r.wav shlob.orc shlob/1.sco
 
-
-
-
-.PHONY : layer
-layer: under.wav
-	echo "-i under.wav" >> .csound6rc
-
-.PHONY : sr96k
-sr96k :
-	echo "-r96000" >> .csound6rc
-
-.PHONY : sr48k
-sr48k :
-	echo "-r48000" >> .csound6rc
-
-.PHONY : sr44k
-sr44k :
-	echo "-r44100" >> .csound6rc
-
-.PHONY : kr1000
-kr1000 :
-	echo "-k1000" >> .csound6rc
-
-.PHONY : kr64
-kr64 :
-	echo "-k64" >> .csound6rc
-
-.PHONY : str3l
-str3l:
-	echo "--strset3=$(inwav)" >> .csound6rc
-
-.PHONY : stdi
-stdi:
-	echo "-L stdin" >> .csound6rc
-
-.PHONY : orca
-orca:
-	echo "--orc" >> .csound6rc
-
-.PHONY : odac
-odac:
-	echo "-odac $(CS_OPTIONS)" > .csound6rc
-
-.PHONY : owav
-owav:
-	echo "-W -o $(outwav) $(CS_OPTIONS)" > .csound6rc
 
 
 
@@ -126,4 +164,8 @@ cleantest:
 .PHONY: cleanlocl
 cleanlocl:
 	rm locl*
+
+.PHONY: cleancs
+cleancs:
+	rm .csound6rc
 

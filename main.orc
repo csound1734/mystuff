@@ -72,16 +72,41 @@ scoreline_i "e"
 endin
 
 	instr	2103 ;ZACL wrapped in an instr
-print	p3
-print	p4
-print	p5
 zacl	p4, p5
 	endin
 
 	instr 	2104 ;automatically play a file and then end perf.
 Sfile	strget	    p4
-inchnls filenchnls Sfile
-ifdur filelen Sfile
-event_i "i", 67, 0, ifdur, p4, 1, 0, 0, 1, 0, 1 ;instr 67 plays sound
-event_i "i", 2101, ifdur, 0 ;end performance afterwards
+inchnls filenchnls  Sfile
+ifdur 	filelen     Sfile
+	event_i     "i", 67, 0, ifdur, p4, 1, 0, 0, 1, 0, 1 ;instr 67 plays sound
+	event_i     "i", 2101, ifdur, 0 ;end performance afterwards
 	endin
+
+	instr 	2106 ;automatically play a file and then end perf.
+Sfile	strget	    p4
+ispd	=	    p5*semitone(p6) ;use p5 and p6 together
+inchnls filenchnls  Sfile
+ifdur 	filelen     Sfile
+ifdur	divz	    ifdur, ispd, 1000000
+	event_i     "i", 67, 0, ifdur, p4, ispd, 0, 0, 1, 0, 1 ;instr 67 plays sound
+	event_i     "i", 2101, ifdur, 0 ;end performance afterwards
+	endin
+
+
+	instr	2105 ;automatically play a file, convolving it with another
+Sfile	strget	    p4
+i_irL	=	    p5
+i_irR	=	    p6
+irdur	=	    max:i(ftlen(i_irL),ftlen(i_irR))/sr ;seconds
+iamp	=	    p7
+inchnls	filenchnls  Sfile
+ifdur	filelen	    Sfile
+print ifdur
+print irdur
+	event_i     "i", 67, 0, ifdur, p4, 1, 0, 0, 1, 2, 3 ;instr 67 plays sound
+	event_i     "i", 69, 0, ifdur+irdur, 0, 1, i_irL, i_irR, iamp^2, 2, 3 ;instr 69 does conv
+	event_i	    "i", 2103, 0, ifdur+irdur, 2, 3 ;clear z-channels
+	event_i	    "i", 2101, ifdur+irdur, 0 ;end performance after
+	endin
+

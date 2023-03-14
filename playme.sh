@@ -1,4 +1,4 @@
-!#/bin/bash
+#!/bin/bash
 
 # Just play a sound and then end performance
 
