@@ -83,7 +83,7 @@ ifdur 	filelen     Sfile
 	event_i     "i", 2101, ifdur, 0 ;end performance afterwards
 	endin
 
-	instr 	2106 ;automatically play a file and then end perf.
+	instr 	2106 ;automatically play a file and then end perf.  -speed ctrl
 Sfile	strget	    p4
 ispd	=	    p5*semitone(p6) ;use p5 and p6 together
 inchnls filenchnls  Sfile
@@ -93,6 +93,25 @@ ifdur	divz	    ifdur, ispd, 1000000
 	event_i     "i", 2101, ifdur, 0 ;end performance afterwards
 	endin
 
+	instr 	2108 ;automatically play a file and then end perf. -zout ctrl
+Sfile	strget	    p4
+iza1	=	    p5
+iza2	=	    p6
+inchnls filenchnls  Sfile
+ifdur 	filelen     Sfile
+	event_i     "i", 67, 0, ifdur, p4, 1, 0, 0, 1, iza1, iza2 ;instr 67 plays sound
+	event_i     "i", 2101, ifdur, 0 ;end performance afterwards
+	endin
+
+	instr 	2110 ;automatically play a file and then end perf. -zout ctrl & speed ctrl
+Sfile	strget	    p4
+iza1	=	    p5
+iza2	=	    p6
+inchnls filenchnls  Sfile
+ifdur 	filelen     Sfile
+	event_i     "i", 67, 0, ifdur, p4, 1, 0, 0, 1, iza1, iza2 ;instr 67 plays sound
+	event_i     "i", 2101, ifdur, 0 ;end performance afterwards
+	endin
 
 	instr	2105 ;automatically play a file, convolving it with another
 Sfile	strget	    p4
@@ -105,6 +124,24 @@ ifdur	filelen	    Sfile
 print ifdur
 print irdur
 	event_i     "i", 67, 0, ifdur, p4, 1, 0, 0, 1, 2, 3 ;instr 67 plays sound
+	event_i     "i", 69, 0, ifdur+irdur, 0, 1, i_irL, i_irR, iamp^2, 2, 3 ;instr 69 does conv
+	event_i	    "i", 2103, 0, ifdur+irdur, 2, 3 ;clear z-channels
+	event_i	    "i", 2101, ifdur+irdur, 0 ;end performance after
+	endin
+
+	instr	2115 ;automatically play a file, convolving it with another -speed ctrl
+Sfile	strget	    p4
+i_irL	=	    p5
+i_irR	=	    p6
+irdur	=	    max:i(ftlen(i_irL),ftlen(i_irR))/sr ;seconds
+iamp	=	    p7 ;an amplitude adjustment (downward) is always needed after convol
+ispd	=	    p8 ;change speed of sound input to convol
+inchnls	filenchnls  Sfile
+ifdur	filelen	    Sfile
+ifdur	divz	    ifdur, ispd, 100000000 ;multiplier of duration must be inv. proportional to speed factor
+print ifdur
+print irdur
+	event_i     "i", 67, 0, ifdur, p4, ispd, 0, 0, 1, 2, 3 ;instr 67 plays sound
 	event_i     "i", 69, 0, ifdur+irdur, 0, 1, i_irL, i_irR, iamp^2, 2, 3 ;instr 69 does conv
 	event_i	    "i", 2103, 0, ifdur+irdur, 2, 3 ;clear z-channels
 	event_i	    "i", 2101, ifdur+irdur, 0 ;end performance after

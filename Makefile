@@ -17,6 +17,14 @@ laststep = bash playme.sh
 
 
 
+locl10.wav : $(basic) locl2.wav
+	echo "f1 0 0 1 \"locl2.wav\" 0 0 1" >> f0z.sco
+	echo "f2 0 0 1 \"locl2.wav\" 0 0 2" >> f0z.sco
+	echo "i 2115 0 0 3 1 2 .3 0.75" >> f0z.sco
+	csound -r96000 -k64 -W -o$@ --strset3=locl2.wav main.orc f0z.sco
+	echo "f 0 z" > f0z.sco
+	$(laststep) $@
+
 locl5.wav : $(basic) locl4.wav
 	echo "f1 0 0 1 \"locl4.wav\" 0 0 1" >> f0z.sco
 	echo "f2 0 0 1 \"locl4.wav\" 0 0 2" >> f0z.sco
