@@ -1,7 +1,12 @@
 #!/bin/bash
 
+# Output a file at a different speed
+
+#input
 sndf=$1
+#speed multiplier
 spd=$2
+#output
 outf=$3
 
 echo "--strset3=$sndf" >> .csound6rc
