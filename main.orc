@@ -67,9 +67,21 @@ ar	ftconv	    ain_r, i_irR, 1024
 	zawm	    ar*igain, izk_ou2
 	endin
 
+instr 2101 ;end performance (e statement in score)
+scoreline_i "e"
+endin
+
 	instr	2103 ;ZACL wrapped in an instr
 print	p3
 print	p4
 print	p5
 zacl	p4, p5
+	endin
+
+	instr 	2104 ;automatically play a file and then end perf.
+Sfile	strget	    p4
+inchnls filenchnls Sfile
+ifdur filelen Sfile
+event_i "i", 67, 0, ifdur, p4, 1, 0, 0, 1, 0, 1 ;instr 67 plays sound
+event_i "i", 2101, ifdur, 0 ;end performance afterwards
 	endin

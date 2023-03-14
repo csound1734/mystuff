@@ -11,6 +11,29 @@ CS_OPTIONS = -Ma
 
 
 
+cv1.wav : intrm/cl1.wav intrm/cl2.wav main.orc
+	echo "i67 0 0.37 1 1 0 0 1 2 3" > temp.sco
+	echo "f1 0 0 1 \"intrm/cl2.wav\" 0 0 1" >> temp.sco
+	echo "f2 0 0 1 \"intrm/cl2.wav\" 0 0 2" >> temp.sco
+	echo "i69 0 1.70 0 1 1 2 .12 2 3" >> temp.sco
+	echo "i2103 0 1.70 2 3" >> temp.sco
+	csound -W -o$@ -r96000 -k64 --strset1=intrm/cl1.wav main.orc temp.sco
+	rm temp.sco
+	rm intrm/*
+	bash playme.sh $@
+
+intrm/cl1.wav : main.orc
+	echo "i67 0 0.37 3 1.40 6 0 1 0 1" > temp.sco
+	csound -W -o$@ -r96000 -k64 --strset3=../germcity/r/r.wav main.orc temp.sco
+	rm temp.sco
+
+intrm/cl2.wav : main.orc
+	echo "i67 0 0.37 3 -.75 15.6 0 1 0 1" > temp.sco
+	csound -W -o$@ -r96000 -k64 --strset3=../germcity/r/r.wav main.orc temp.sco
+	rm temp.sco
+
+
+
 .PHONY: main
 main: main.orc
 	csound $(CS_OPTIONS) main.orc
@@ -89,6 +112,9 @@ import: puff.txt
 
 
 
+.PHONY: cleanintrm
+cleanintrm:
+	rm intrm/*
 .PHONY: cleanwav
 cleanwav:
 	rm *.wav
