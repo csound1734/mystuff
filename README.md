@@ -1,14 +1,10 @@
-## Control output options for csound
+## Csound utilities
 
-When `csound` is called from the command line, without any options, like this:
+### Play a (stereo or mono) sound with automatic ending
+`bash playme.sh file.wav`
 
-`csound test.orc test.sco`
-
-... the options saved in the .csound6rc file are used by csound. The Makefile exploits this allowing the user to toggle how csound renders its audio output: either saving the output to disk or sending it to the dac to hear.
-
-* `make odac` will configure csound to render to dac
-
-* `make owav` will configure csound to render to disk (.wav format) 
+### Convert a soundfile to a different sample rate
+`bash sr.sh in.wav 96000 out.wav` converts the file `in.wav` to 96k
 
 ## Git workflow - using make
 
