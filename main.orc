@@ -46,6 +46,27 @@ ainr	*=	    awind
 	;printk	    .1, downsamp(awind)
 	endin
 
+	instr 	69
+izk_out	=	    p4
+izk_ou2	=	    p5
+
+i_irL	=	    p6	;LEFT IMPULSE RESPONSE
+i_irR	=	    p7	;RIGHT IMPULSE RESPONSE
+
+igain	=	    p8	;AMP MULTIPLIER
+igain	*=	    igain
+
+izk_in	=	    p9
+izk_in2	=	    p10
+
+ain_l	zar	    izk_in
+ain_r	zar	    izk_in2
+al	ftconv	    ain_l, i_irL, 1024
+ar	ftconv	    ain_r, i_irR, 1024
+	zawm	    al*igain, izk_out
+	zawm	    ar*igain, izk_ou2
+	endin
+
 	instr	2103 ;ZACL wrapped in an instr
 print	p3
 print	p4

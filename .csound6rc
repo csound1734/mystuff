@@ -1,7 +1,1 @@
--odac -Ma
---strset3=locl.wav
--L stdin
--r96000
--k1000
--i under.wav
---orc
+

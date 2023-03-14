@@ -2,6 +2,7 @@ branch = main
 remote = origin
 yumyum = ../yumyum
 
+inwav = inpu.wav
 outwav = locl.wav
 
 
@@ -30,13 +31,25 @@ layer: under.wav
 sr96k :
 	echo "-r96000" >> .csound6rc
 
+.PHONY : sr48k
+sr48k :
+	echo "-r48000" >> .csound6rc
+
+.PHONY : sr44k
+sr44k :
+	echo "-r44100" >> .csound6rc
+
 .PHONY : kr1000
 kr1000 :
 	echo "-k1000" >> .csound6rc
 
+.PHONY : kr64
+kr64 :
+	echo "-k64" >> .csound6rc
+
 .PHONY : str3l
 str3l:
-	echo "--strset3=locl.wav" >> .csound6rc
+	echo "--strset3=$(inwav)" >> .csound6rc
 
 .PHONY : stdi
 stdi:
