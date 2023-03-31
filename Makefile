@@ -2,6 +2,8 @@ branch = main
 remote = origin
 yumyum = ../yumyum
 
+sdir = ../samples/
+
 inwav = inpu.wav
 outwav = locl.wav
 
@@ -12,10 +14,49 @@ CS_OPTIONS = -Ma
 
 
 
+
+f0z = echo "f 0 z" > f0z.sco
+
+
+# laststep = bash playme.sh
 laststep = bash playme.sh
 
 
 
+
+locl_we1a.pvx : $(basic) locl_we1a.wav
+	pvanal locl_we1a.wav locl_we1a.pvx
+
+locl_we1a.wav : $(basic) locl_we1.wav Makefile
+	bash varspd.sh locl_we1.wav .30 $@
+	$(laststep) $@
+
+locl_we1.wav : $(basic)
+	bash extract.sh ../germcity/siland/el-saber-de-les-plantes.wav 72 .16 $@
+	$(laststep) $@
+
+
+
+
+locl12.wav : $(basic) locl11.wav
+	bash varspd.sh locl11.wav 3.1415 temp.wav
+	echo "f1 0 0 1 \"locl11.wav\" 0 0 1" >> f0z.sco
+	echo "f2 0 0 1 \"locl11.wav\" 0 0 2" >> f0z.sco
+	echo "i 2115 0 0 3 1 2 .7 0.75" >> f0z.sco
+	csound -r96000 -k64 -W -o$@ --strset3=temp.wav main.orc f0z.sco
+	echo "f 0 z" > f0z.sco
+	rm temp.wav
+	$(laststep) $@
+
+locl11.wav : $(basic) locl10.wav
+	bash varspd.sh locl10.wav 1.013013 temp.wav
+	echo "f1 0 1048576 1 \"locl10.wav\" 0 0 1" >> f0z.sco
+	echo "f2 0 1048576 1 \"locl10.wav\" 0 0 2" >> f0z.sco
+	echo "i 2115 0 0 3 1 2 .3 0.75" >> f0z.sco
+	csound -r96000 -k64 -W -o$@ --strset3=temp.wav main.orc f0z.sco
+	echo "f 0 z" > f0z.sco
+	rm temp.wav
+	$(laststep) $@
 
 locl10.wav : $(basic) locl2.wav
 	echo "f1 0 0 1 \"locl2.wav\" 0 0 1" >> f0z.sco
@@ -176,4 +217,8 @@ cleanlocl:
 .PHONY: cleancs
 cleancs:
 	rm .csound6rc
+
+.PHONY: f0z
+f0z: 
+	echo "f 0 z" > f0z.sco
 

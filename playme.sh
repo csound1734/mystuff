@@ -10,6 +10,6 @@ echo "i2104 0 0 2104" > temp.sco
 # need this line
 echo "f 0 z" >> temp.sco
 # Csound
-csound -W -odac -r96000 -k64 --strset2104=$infi main.orc temp.sco
+csound --env:SFDIR+=Users/nicoleangelaschmidt/Music/germcity/siland -W -odac -r96000 -k64 --strset2104=$infi main.orc temp.sco
 # cleanup
 rm temp.sco

@@ -7,6 +7,8 @@ zakinit 256, 256
 #define LIM_s_ON #1#
 #include "/orc/lim.orc"
 
+#include "/orc/cx7k.orc"
+
 	instr 	67 ;playback sound from disk; basic opcode control
 ares[] 	diskin 	    strget(p4), p5, p6, p7	;File, speed, offset, wraparound
 iamp 	= 	    p8
@@ -46,7 +48,7 @@ ainr	*=	    awind
 	;printk	    .1, downsamp(awind)
 	endin
 
-	instr 	69
+	instr 	69 ;convolution
 izk_out	=	    p4
 izk_ou2	=	    p5
 
@@ -65,6 +67,33 @@ al	ftconv	    ain_l, i_irL, 1024
 ar	ftconv	    ain_r, i_irR, 1024
 	zawm	    al*igain, izk_out
 	zawm	    ar*igain, izk_ou2
+	endin
+
+	instr 	70 	;FM DX-7
+ivel = p4
+icps = cpsmidinn(p5)
+ifn = p6
+igain = p7
+axxx	CX7	    icps, ivel, ifn, p3, 3
+ares	zar	    3
+	zacl	    3,3
+	zawm	    ares*igain, 0
+	zawm 	    ares*igain, 1
+	endin
+
+	instr 	123 ;use GEN23 to load data from text file
+Sfile	=	    p4
+ifn	=	    p5
+ilen	=	    p6
+ires	ftgen	    ifn, 0, ilen, -23, Sfile
+	endin
+
+	instr 	124 ;use GEN23 to load data from text file
+istr	=	    p4 	;Get a filename with strset
+ifn	=	    p5	;can be 0 to have ftgen pick
+ilen	=	    p6	;size of table
+Sfile	strget	    istr
+ires	ftgen	    ifn, 0, ilen, -23, Sfile
 	endin
 
 instr 2101 ;end performance (e statement in score)
@@ -146,4 +175,13 @@ print irdur
 	event_i	    "i", 2103, 0, ifdur+irdur, 2, 3 ;clear z-channels
 	event_i	    "i", 2101, ifdur+irdur, 0 ;end performance after
 	endin
+
+	instr 	2014 ;automatically play a file and then end perf. (PVS FILE IN)
+Sfile	strget	    p4 ;this is a .pvx file from pvanal, not a .wav/.aif
+ifdur 	filelen     Sfile
+	event_i     "i", 67, 0, ifdur, p4, 1, 0, 0, 1, 0, 1 ;instr 67 plays sound
+	event_i     "i", 2101, ifdur, 0 ;end performance afterwards
+	endin
+
+
 
