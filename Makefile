@@ -24,6 +24,12 @@ laststep = bash playme.sh
 
 
 
+locl_m1.wav : $(basic) Makefile
+	echo "i 73 0 -1" >> f0z.sco
+	csound -o$@ -r96000 -k64 -T -F ../../Downloads/MIDI-Unprocessed_02_R2_2008_01-05_ORIG_MID--AUDIO_02_R2_2008_wav--5.midi --midi-key=5 --midi-velocity=4 main.orc f0z.sco
+	$(laststep) $@
+	$(f0z)
+
 locl_we1a.pvx : $(basic) locl_we1a.wav
 	pvanal locl_we1a.wav locl_we1a.pvx
 

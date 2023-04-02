@@ -7,5 +7,7 @@ locl*
 test*
 temp*
 
+GENERATE*
+
 .csound6rc
 

@@ -81,6 +81,62 @@ ares	zar	    3
 	zawm 	    ares*igain, 1
 	endin
 
+;#undef MAKE_SCORE_FROM_MIDI ##
+
+#ifdef MAKE_SCORE_FROM_MIDI ;define from command-line if score translation of midi desired
+
+	#ifndef MAKE_SCORE_P1 ;use to change written p1 for score output
+	#define MAKE_SCORE_P1 #p1# ;default meaning of macro
+	#endif
+
+massign 0, 71 ;midi routing all channels
+ gSmidiw init ""
+
+	instr 	71 ;turns MIDI input into score output file (score translation)
+fprints $MAKE_SCORE_FROM_MIDI, gSmidiw
+istt elapsedtime
+fprints $MAKE_SCORE_FROM_MIDI, "i %d %f %f %d %d\n", $MAKE_SCORE_P1, istt, 0.0, p4, p5
+kdur eventtime
+gSmidiw sprintfk " i %d %f %f %d %d\n", $MAKE_SCORE_P1, istt, kdur, p4, p5
+	endin
+
+#endif
+
+#ifndef MAKE_SCORE_FROM_MIDI
+
+massign 0, 141 ;midi routing all channels
+
+#endif
+
+	instr	141 ; boring synth
+icos ftgenonce 0,0,16384,11,1
+ivel = .1/(1.02^p4)
+icps = cpsmidinn(p5)
+kenv linsegr 0, .007, 1, 1, .5, 0.062, 0
+kmul port 1.11, .009, .69
+ares gbuzz ivel*kenv, icps, 13, 3, kmul,icos
+zawm ares, 0
+zawm ares, 1
+	endin
+
+	instr	73 ;convolution with rotating IR
+iirlen = 2048
+ibufl ftgentmp 0,0,iirlen,-2,0 ;will contain impulse response
+ibufr ftgentmp 0,0,iirlen,-2,0 ;will contain impulse response
+amenl, amenr diskin2 "amen.wav", 1.8, 0, 1
+aphs lphasor 1,0,iirlen,1
+afac = 1
+tablew amenl*afac, aphs, ibufl, 0
+tablew amenr*afac, aphs, ibufr, 0
+ain zar 0
+ai2 zar 1
+aresl liveconv ain, ibufl, 256, k(1), k(0)
+aresr liveconv ai2, ibufr, 256, k(1), k(0)
+zacl 0,1
+zawm aresl*.05, 0
+zawm aresr*.05, 1
+	endin
+
 	instr 	123 ;use GEN23 to load data from text file
 Sfile	=	    p4
 ifn	=	    p5
@@ -117,8 +173,8 @@ Sfile	strget	    p4
 ispd	=	    p5*semitone(p6) ;use p5 and p6 together
 inchnls filenchnls  Sfile
 ifdur 	filelen     Sfile
-ifdur	divz	    ifdur, ispd, 1000000
-	event_i     "i", 67, 0, ifdur, p4, ispd, 0, 0, 1, 0, 1 ;instr 67 plays sound
+ifdur	divz	    ifdur, abs(ispd), 1000000
+	event_i     "i", 67, 0, ifdur, p4, ispd, 0, 1, 1, 0, 1 ;instr 67 plays sound
 	event_i     "i", 2101, ifdur, 0 ;end performance afterwards
 	endin
 
