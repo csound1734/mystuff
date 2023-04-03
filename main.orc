@@ -84,9 +84,10 @@ ares	zar	    3
 #ifdef MAKE_MIDI_FROM_SCORE
 
 	instr	72 ;turns a score event into midi out data
-	ichannel = $MAKE_MIDI_FROM_SCORE ;the macro sets the channel, 0-15
+
 	ivel = p4
 	ikey = p5
+	ichannel = p6
 	kskip init 0
 	if kskip==0 then
 		kskip = 1
@@ -99,8 +100,6 @@ ares	zar	    3
 	endin
 #endif
 
-;#undef MAKE_SCORE_FROM_MIDI ##
-
 #ifdef MAKE_SCORE_FROM_MIDI ;define from command-line if score translation of midi desired
 
 	#ifndef MAKE_SCORE_P1 ;use to change written p1 for score output
@@ -108,14 +107,19 @@ ares	zar	    3
 	#endif
 
 massign 0, 71 ;midi routing all channels
- gSmidiw init ""
+
+gSresult init ""
 
 	instr 	71 ;turns MIDI input into score output file (score translation)
-fprints $MAKE_SCORE_FROM_MIDI, gSmidiw
 istt elapsedtime
-fprints $MAKE_SCORE_FROM_MIDI, "i %d %f %f %d %d\n", $MAKE_SCORE_P1, istt, 0.0, p4, p5
 kdur eventtime
-gSmidiw sprintfk " i %d %f %f %d %d\n", $MAKE_SCORE_P1, istt, kdur, p4, p5
+if release:k()==1 then
+	;fprintks $MAKE_SCORE_FROM_MIDI, "i %d %f %f %d %d\n", $MAKE_SCORE_P1, istt, kdur, p4, p5
+	Sres sprintfk "\ni %d %f %f %d %d", $MAKE_SCORE_P1, istt, kdur, p4, p5
+	Scommand sprintfk "echo \" %s \" >> %s", Sres, $MAKE_SCORE_FROM_MIDI
+	kres system k(1), Scommand
+	;printf "\ni %d %f %f %d %d\n", k(1), $MAKE_SCORE_P1, istt, kdur, p4, p5
+endif
 	endin
 
 #endif
