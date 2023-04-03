@@ -205,6 +205,14 @@ import: puff.txt
 
 
 
+.PHONY: cleangenerate
+cleangenerate:
+	rm GENERATE*
+
+.PHONY: cleancontinue
+cleancontinue:
+	rm CONTINUE*
+
 .PHONY: cleanintrm
 cleanintrm:
 	rm intrm/*

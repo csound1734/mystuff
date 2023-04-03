@@ -81,6 +81,24 @@ ares	zar	    3
 	zawm 	    ares*igain, 1
 	endin
 
+#ifdef MAKE_MIDI_FROM_SCORE
+
+	instr	72 ;turns a score event into midi out data
+	ichannel = $MAKE_MIDI_FROM_SCORE ;the macro sets the channel, 0-15
+	ivel = p4
+	ikey = p5
+	kskip init 0
+	if kskip==0 then
+		kskip = 1
+		midiout 144, ichannel, ikey, ivel ;send noteon
+	endif
+	krelease release
+	if krelease==1 then ;last k-cycle
+		midiout 144, ichannel, ikey, 0 ;send noteoff (a noteon w/ velocity of zero)
+	endif
+	endin
+#endif
+
 ;#undef MAKE_SCORE_FROM_MIDI ##
 
 #ifdef MAKE_SCORE_FROM_MIDI ;define from command-line if score translation of midi desired
